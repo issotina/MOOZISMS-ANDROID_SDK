@@ -14,7 +14,7 @@
 	
 ### Add the dependence in your module app build.gradle file
 ```gradle 
-    compile 'com.craftsman.moozisms:sms-sender:1.0.1'
+    compile 'com.craftsman.moozisms:sms-sender:1.0.2'
  ```
 
 ## Init SDK
