@@ -1,7 +1,7 @@
 # MOOZISMS-ANDROID_SDK
 # Android sdk for send sms with moozisms platform
 
->Before using this sdk ensure you have your API keys and acces Token else you can get it at dashboard.moozisms.com
+>Before using this sdk ensure you have your API keys and acces Token else you can get it at moozisms.com/dashboard
 
 ## Add Dependence to your project
 
