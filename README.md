@@ -24,7 +24,7 @@ MOOZISMS moozisms = new MOOZISMS(/*Android Context*/,/*Account SID*/,/*Your Auth
 
 ## SEND YOUR SMS
  ```java
-moozisms.sendSms(/*Receiver phone Number*/,/*SENDER ALPHANUMERIC ID*/, 
+moozisms.sendSms(/*Receiver phone Number*/,/*SENDER ALPHANUMERIC ID*/, /*Message Content*/
 		new MOOZISMS.Callback() {
             @Override
             public void onFinish(boolean isSucces) {
