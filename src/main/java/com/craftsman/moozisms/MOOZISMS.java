@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,9 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.nio.charset.Charset;
 
 
 /**
@@ -52,18 +48,19 @@ public class MOOZISMS {
      *
      * @param to
      * @param from alphanumeric sender ID
+     * @param msg message content
      * @param callback background task handler
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void sendSms(final String to, final String from, @Nullable final Callback callback){
+    public void  sendSms(final String to, final String from, final String msg, @Nullable final Callback callback){
         checkSafety();
+        this.from = from;
         final String receiverId = cleanReceiverId(to);
 
         new AsyncTask<Void, Void, Boolean>() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             protected Boolean doInBackground(Void... voids) {
-                return  sendSMS(receiverId,from);
+                return  sendSMS(receiverId,msg);
             }
 
             @Override
@@ -100,7 +97,6 @@ public class MOOZISMS {
         if(to.startsWith("00"))  to = to.substring(2);
         return to;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private  boolean sendSMS(String to, String msg) {
 
         int responseCode;
@@ -109,8 +105,8 @@ public class MOOZISMS {
 
         try {
 
-            byte[] ptext = msg.getBytes(ISO_8859_1);
-            String value = new String(ptext, UTF_8);
+            byte[] ptext = msg.getBytes("ISO-8859-1");
+            String value = new String(ptext, Charset.forName("UTF-8"));
 
             String datatype = "json";  //String datatype = "xml";
             String urlParameters = "api_key="+ACCOUNT_SID+
@@ -121,7 +117,7 @@ public class MOOZISMS {
                     "&datatype="+datatype;
             System.out.println("param "+urlParameters);
             //String params = "api_key=123456&api_secret=123456&to=22892520119&from=MOM&text=cc ici&datatype=json";
-            byte[] postData = urlParameters.getBytes(UTF_8);
+            byte[] postData = urlParameters.getBytes(Charset.forName("UTF-8"));
             int postDataLength = postData.length;
             URL restServiceURL = new URL(targetURL);
 
@@ -133,8 +129,11 @@ public class MOOZISMS {
             httpConnection.setRequestProperty("charset", "utf-8");
             httpConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
             httpConnection.setUseCaches(false);
-            try (DataOutputStream wr = new DataOutputStream(httpConnection.getOutputStream())) {
+            try  {
+                DataOutputStream wr = new DataOutputStream(httpConnection.getOutputStream());
                 wr.write(postData);
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
              responseCode = httpConnection.getResponseCode();
