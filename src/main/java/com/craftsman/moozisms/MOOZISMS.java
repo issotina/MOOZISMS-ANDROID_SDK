@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 
 
 /**
- * Created by ALI SHADAÏ (Software Craftman) on 02/07/2017.
+ * Created by ALI SHADAÏ (Software Craftsman) on 02/07/2017.
  */
 
 public class MOOZISMS {
